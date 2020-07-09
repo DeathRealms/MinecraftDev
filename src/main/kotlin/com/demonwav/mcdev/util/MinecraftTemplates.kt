@@ -22,6 +22,7 @@ class MinecraftTemplates : FileTemplateGroupDescriptorFactory {
 
         FileTemplateGroupDescriptor("Bukkit", PlatformAssets.BUKKIT_ICON).let { bukkitGroup ->
             group.addTemplate(bukkitGroup)
+            bukkitGroup.addTemplate(FileTemplateDescriptor(KOTLIN_BUKKIT_MAIN_CLASS_TEMPLATE))
             bukkitGroup.addTemplate(FileTemplateDescriptor(BUKKIT_MAIN_CLASS_TEMPLATE))
             bukkitGroup.addTemplate(FileTemplateDescriptor(BUKKIT_PLUGIN_YML_TEMPLATE))
             bukkitGroup.addTemplate(FileTemplateDescriptor(BUKKIT_BUILD_GRADLE_TEMPLATE))
@@ -116,6 +117,8 @@ class MinecraftTemplates : FileTemplateGroupDescriptorFactory {
     }
 
     companion object {
+
+        const val KOTLIN_BUKKIT_MAIN_CLASS_TEMPLATE = "Kotlin Bukkit Main Class.kt"
         const val BUKKIT_MAIN_CLASS_TEMPLATE = "Bukkit Main Class.java"
         const val BUKKIT_PLUGIN_YML_TEMPLATE = "Bukkit plugin.yml"
         const val BUKKIT_BUILD_GRADLE_TEMPLATE = "Bukkit build.gradle"

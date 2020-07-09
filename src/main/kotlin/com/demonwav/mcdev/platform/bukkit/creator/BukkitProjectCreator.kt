@@ -10,10 +10,7 @@
 
 package com.demonwav.mcdev.platform.bukkit.creator
 
-import com.demonwav.mcdev.creator.BaseProjectCreator
-import com.demonwav.mcdev.creator.BasicJavaClassStep
-import com.demonwav.mcdev.creator.CreateDirectoriesStep
-import com.demonwav.mcdev.creator.CreatorStep
+import com.demonwav.mcdev.creator.*
 import com.demonwav.mcdev.creator.buildsystem.BuildDependency
 import com.demonwav.mcdev.creator.buildsystem.BuildRepository
 import com.demonwav.mcdev.creator.buildsystem.BuildSystem
@@ -29,6 +26,9 @@ import com.demonwav.mcdev.creator.buildsystem.maven.CommonModuleDependencyStep
 import com.demonwav.mcdev.creator.buildsystem.maven.MavenBuildSystem
 import com.demonwav.mcdev.creator.buildsystem.maven.MavenGitignoreStep
 import com.demonwav.mcdev.platform.PlatformType
+import com.demonwav.mcdev.platform.bukkit.util.CustomDependency
+import com.demonwav.mcdev.platform.bukkit.util.CustomRepository
+import com.demonwav.mcdev.platform.bukkit.util.Language
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.project.Project
@@ -41,9 +41,16 @@ sealed class BukkitProjectCreator<T : BuildSystem>(
     protected val config: BukkitProjectConfig
 ) : BaseProjectCreator(rootModule, buildSystem) {
 
-    protected fun setupMainClassStep(): BasicJavaClassStep {
-        return createJavaClassStep(config.mainClass) { packageName, className ->
-            BukkitTemplate.applyMainClass(project, packageName, className)
+
+
+    protected fun setupMainClassStep(): CreatorStep {
+        return when(config.language){
+            Language.JAVA-> createJavaClassStep(config.mainClass) { packageName, className ->
+                BukkitTemplate.applyMainClass(project, packageName, className, config.language)
+            }
+            Language.KOTLIN-> createKotlinClassStep(config.mainClass){packageName, className ->
+                BukkitTemplate.applyMainClass(project, packageName, className, config.language)
+        }
         }
     }
 
@@ -114,7 +121,7 @@ class BukkitGradleCreator(
         val settingsText = BukkitTemplate.applySettingsGradle(project, buildSystem.artifactId)
         val files = GradleFiles(buildText, propText, settingsText)
 
-        return listOf(
+        val steps =  mutableListOf(
             setupDependencyStep(),
             CreateDirectoriesStep(buildSystem, rootDirectory),
             BasicGradleStep(project, rootDirectory, buildSystem, files),
@@ -124,6 +131,13 @@ class BukkitGradleCreator(
             GradleGitignoreStep(project, rootDirectory),
             BasicGradleFinalizerStep(rootModule, rootDirectory, buildSystem)
         )
+        if(config.mattsCommandLib) steps.add(0, CustomDependencyStep(buildSystem, CustomDependency.MATTS_COMMAND_LIB))
+        if(config.mattsGuiLib) steps.add(0, CustomDependencyStep(buildSystem, CustomDependency.MATT_GUI_LIB))
+        if(config.vaultApi){
+            steps.add(0,CustomRepoStep(buildSystem, CustomRepository.JITPACK))
+            steps.add(0,CustomDependencyStep(buildSystem, CustomDependency.VAULT_API))
+        }
+        return steps
     }
 
     override fun getMultiModuleSteps(projectBaseDir: Path): Iterable<CreatorStep> {
@@ -138,6 +152,35 @@ class BukkitGradleCreator(
             setupYmlStep()
         )
     }
+}
+
+open class CustomRepoStep(
+        protected val buildSystem: BuildSystem,
+        protected val repo:CustomRepository
+) : CreatorStep{
+    override fun runStep(indicator: ProgressIndicator) {
+        println("Adding ${repo.name}")
+        buildSystem.repositories.add(BuildRepository(
+                repo.id,
+                repo.url
+        ))
+    }
+}
+
+open class CustomDependencyStep(
+        protected val buildSystem: BuildSystem,
+        protected val dependency: CustomDependency
+) : CreatorStep{
+    override fun runStep(indicator: ProgressIndicator) {
+        println("Adding ${dependency.name}")
+        buildSystem.dependencies.add(BuildDependency(
+                dependency.groupId,
+                dependency.artifactId,
+                dependency.version,
+                gradleConfiguration = "implementation"
+        ))
+    }
+
 }
 
 open class BukkitDependenciesStep(

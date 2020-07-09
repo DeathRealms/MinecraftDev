@@ -84,6 +84,38 @@ interface CreatorStep {
     }
 }
 
+class BasicKotlinClassStep(
+        private val project:Project,
+        private val buildSystem: BuildSystem,
+        private val className: String,
+        private val classText:String
+): CreatorStep{
+    override fun runStep(indicator: ProgressIndicator) {
+        val dirs = buildSystem.dirsOrError
+
+        runWriteTask {
+            indicator.text = "Writing class: $className"
+            val files = className.split(".")
+            val className = files.last()
+
+            val sourceDir = getMainClassDirectory(dirs.kotlinSource,files)
+
+            val classFile = CreatorStep.writeTextToFile(project, sourceDir, "$className.kt", classText)
+
+            PsiManager.getInstance(project).findFile(classFile)?.let { classPsi->
+                EditorHelper.openInEditor(classPsi)
+            }
+        }
+    }
+
+    private fun getMainClassDirectory(dir:Path, files:List<String>):Path{
+        val directories = files.slice(0 until files.lastIndex).toTypedArray()
+        val outputDir = Paths.get(dir.toAbsolutePath().toString(), *directories)
+        Files.createDirectories(outputDir)
+        return outputDir
+    }
+}
+
 class BasicJavaClassStep(
     private val project: Project,
     private val buildSystem: BuildSystem,
@@ -115,6 +147,7 @@ class BasicJavaClassStep(
         Files.createDirectories(outputDir)
         return outputDir
     }
+
 }
 
 class CreateDirectoriesStep(private val buildSystem: BuildSystem, private val directory: Path) : CreatorStep {

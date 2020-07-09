@@ -20,6 +20,7 @@ import com.demonwav.mcdev.creator.buildsystem.maven.MavenCreator
 import com.demonwav.mcdev.platform.PlatformType
 import com.demonwav.mcdev.platform.bukkit.BukkitLikeConfiguration
 import com.demonwav.mcdev.platform.bukkit.data.LoadOrder
+import com.demonwav.mcdev.platform.bukkit.util.Language
 import com.intellij.openapi.module.Module
 import java.nio.file.Path
 
@@ -28,6 +29,11 @@ class BukkitProjectConfig(override var type: PlatformType) :
 
     override lateinit var mainClass: String
 
+    var language:Language = Language.KOTLIN
+
+    var mattsCommandLib = false
+    var mattsGuiLib = false
+    var vaultApi = false
     var loadOrder: LoadOrder = LoadOrder.POSTWORLD
     var minecraftVersion: String? = null
 

@@ -14,6 +14,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 data class DirectorySet(
+    val kotlinSource:Path,
     val sourceDirectory: Path,
     val resourceDirectory: Path,
     val testSourceDirectory: Path,
@@ -21,6 +22,7 @@ data class DirectorySet(
 ) {
     companion object {
         fun create(dir: Path): DirectorySet {
+            val kotlinSource = dir.resolve("src/main/kotlin")
             val sourceDirectory = dir.resolve("src/main/java")
             val resourceDirectory = dir.resolve("src/main/resources")
             val testSourceDirectory = dir.resolve("src/test/java")
@@ -29,7 +31,7 @@ data class DirectorySet(
             Files.createDirectories(resourceDirectory)
             Files.createDirectories(testSourceDirectory)
             Files.createDirectories(testResourceDirectory)
-            return DirectorySet(sourceDirectory, resourceDirectory, testSourceDirectory, testResourceDirectory)
+            return DirectorySet(kotlinSource, sourceDirectory, resourceDirectory, testSourceDirectory, testResourceDirectory)
         }
     }
 }

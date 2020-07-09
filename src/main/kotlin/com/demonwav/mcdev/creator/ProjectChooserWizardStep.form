@@ -138,14 +138,6 @@
                   <text value="Forge Mod"/>
                 </properties>
               </component>
-              <component id="51426" class="javax.swing.JCheckBox" binding="bungeeCordPluginCheckBox">
-                <constraints>
-                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="BungeeCord Plugin"/>
-                </properties>
-              </component>
               <component id="a965" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -206,6 +198,14 @@
                   <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
+              <component id="51426" class="javax.swing.JCheckBox" binding="bungeeCordPluginCheckBox">
+                <constraints>
+                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="BungeeCord Plugin"/>
+                </properties>
+              </component>
             </children>
           </grid>
         </children>
