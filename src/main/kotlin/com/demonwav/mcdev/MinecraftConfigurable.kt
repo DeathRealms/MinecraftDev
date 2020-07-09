@@ -20,7 +20,6 @@ import javax.swing.JPanel
 import org.jetbrains.annotations.Nls
 
 class MinecraftConfigurable : Configurable {
-
     private lateinit var panel: JPanel
     private lateinit var showProjectPlatformIconsCheckBox: JCheckBox
     private lateinit var showEventListenerGutterCheckBox: JCheckBox
@@ -36,7 +35,6 @@ class MinecraftConfigurable : Configurable {
 
     override fun createComponent(): JComponent {
         showChatColorUnderlinesCheckBox.addActionListener { setUnderlineBox() }
-
         return panel
     }
 

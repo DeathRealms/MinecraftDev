@@ -1,3 +1,13 @@
+/*
+ * Minecraft Dev for IntelliJ
+ *
+ * https://minecraftdev.org
+ *
+ * Copyright (c) 2020 minecraft-dev
+ *
+ * MIT License
+ */
+
 package com.demonwav.mcdev.platform.bukkit.util
 
 enum class CustomDependency(val groupId:String, val artifactId:String, val version:String) {

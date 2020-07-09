@@ -10,6 +10,7 @@
 
 import net.minecrell.gradle.licenser.header.HeaderStyle
 import org.gradle.internal.jvm.Jvm
+import org.jetbrains.intellij.tasks.BuildSearchableOptionsTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
@@ -19,7 +20,7 @@ buildscript {
 }
 
 plugins {
-    kotlin("jvm") version "1.3.31" // kept in sync with IntelliJ's bundled dep
+    kotlin("jvm") version "1.3.70" // kept in sync with IntelliJ's bundled dep
     groovy
     idea
     id("org.jetbrains.intellij") version "0.4.21"
@@ -31,7 +32,7 @@ apply(from = "gradle/attach-sources.gradle.kts")
 
 group = "com.demonwav.minecraft-dev"
 
-val coroutineVersion = "1.2.1" // Coroutine version also kept in sync with IntelliJ's bundled dep
+val coroutineVersion = "1.3.4" // Coroutine version also kept in sync with IntelliJ's bundled dep
 
 val ideaVersion: String by project
 val ideaVersionName: String by project
@@ -97,7 +98,7 @@ dependencies {
 
     // For non-SNAPSHOT versions (unless Jetbrains fixes this...) find the version with:
     // afterEvaluate { println(intellij.ideaDependency.buildNumber.substring(intellij.type.length + 1)) }
-    gradleToolingExtension("com.jetbrains.intellij.gradle:gradle-tooling-extension:193.5233.102")
+    gradleToolingExtension("com.jetbrains.intellij.gradle:gradle-tooling-extension:201.6668.121")
     gradleToolingExtension("org.jetbrains:annotations:19.0.0")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.1")
@@ -109,11 +110,11 @@ intellij {
     version = ideaVersion
     // Bundled plugin dependencies
     setPlugins(
-        "java", "maven", "gradle", "Groovy",
-        // needed dependencies for unit tests
-        "properties", "junit",
-        // useful to have when running for mods.toml
-        "org.toml.lang:0.2.111.34-193"
+            "java", "maven", "gradle", "Groovy",
+            // needed dependencies for unit tests
+            "properties", "junit", "repository-search",
+            // useful to have when running for mods.toml
+            "org.toml.lang:0.2.114.35-193"
     )
 
     pluginName = "Minecraft Development"
@@ -154,6 +155,11 @@ tasks.withType<GroovyCompile>().configureEach {
     options.compilerArgs = listOf("-proc:none")
 }
 
+tasks.withType<BuildSearchableOptionsTask>().configureEach {
+    // These tasks are failing for some reason with IDEA 2020.1
+    enabled = false
+}
+
 tasks.processResources {
     for (lang in arrayOf("", "_en")) {
         from("src/main/resources/messages.MinecraftDevelopment_en_US.properties") {
@@ -181,14 +187,14 @@ tasks.test {
     }
     if (JavaVersion.current().isJava9Compatible) {
         jvmArgs(
-            "--add-opens", "java.base/java.io=ALL-UNNAMED",
-            "--add-opens", "java.base/java.lang=ALL-UNNAMED",
-            "--add-opens", "java.desktop/sun.awt=ALL-UNNAMED",
-            "--add-opens", "java.desktop/java.awt=ALL-UNNAMED",
-            "--add-opens", "java.desktop/javax.swing=ALL-UNNAMED",
-            "--add-opens", "java.desktop/javax.swing.plaf.basic=ALL-UNNAMED",
-            "--add-opens", "java.desktop/sun.font=ALL-UNNAMED",
-            "--add-opens", "java.desktop/sun.swing=ALL-UNNAMED"
+                "--add-opens", "java.base/java.io=ALL-UNNAMED",
+                "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+                "--add-opens", "java.desktop/sun.awt=ALL-UNNAMED",
+                "--add-opens", "java.desktop/java.awt=ALL-UNNAMED",
+                "--add-opens", "java.desktop/javax.swing=ALL-UNNAMED",
+                "--add-opens", "java.desktop/javax.swing.plaf.basic=ALL-UNNAMED",
+                "--add-opens", "java.desktop/sun.font=ALL-UNNAMED",
+                "--add-opens", "java.desktop/sun.swing=ALL-UNNAMED"
         )
     }
 }
@@ -206,28 +212,28 @@ license {
     style["bnf"] = HeaderStyle.BLOCK_COMMENT.format
 
     include(
-        "**/*.java",
-        "**/*.kt",
-        "**/*.kts",
-        "**/*.groovy",
-        "**/*.gradle",
-        "**/*.xml",
-        "**/*.properties",
-        "**/*.html",
-        "**/*.flex",
-        "**/*.bnf"
+            "**/*.java",
+            "**/*.kt",
+            "**/*.kts",
+            "**/*.groovy",
+            "**/*.gradle",
+            "**/*.xml",
+            "**/*.properties",
+            "**/*.html",
+            "**/*.flex",
+            "**/*.bnf"
     )
     exclude(
-        "com/demonwav/mcdev/platform/mcp/at/gen/**",
-        "com/demonwav/mcdev/nbt/lang/gen/**",
-        "com/demonwav/mcdev/translations/lang/gen/**"
+            "com/demonwav/mcdev/platform/mcp/at/gen/**",
+            "com/demonwav/mcdev/nbt/lang/gen/**",
+            "com/demonwav/mcdev/translations/lang/gen/**"
     )
 
     tasks {
         register("gradle") {
             files = project.fileTree(
-                "dir" to project.projectDir,
-                "includes" to listOf("**/*.gradle.kts", "gradle.properties")
+                    "dir" to project.projectDir,
+                    "includes" to listOf("**/*.gradle.kts", "gradle.properties")
             )
         }
         register("grammars") {
@@ -260,9 +266,9 @@ fun generateLexer(name: String, flex: String, pack: String) = tasks.register<Jav
 
     doFirst {
         args(
-            "--skel", jflexSkeleton.singleFile.absolutePath,
-            "-d", dst,
-            src
+                "--skel", jflexSkeleton.singleFile.absolutePath,
+                "-d", dst,
+                src
         )
 
         // Delete current lexer
@@ -289,9 +295,9 @@ fun generatePsiAndParser(name: String, bnf: String, pack: String) = tasks.regist
 
     if (JavaVersion.current().isJava9Compatible) {
         jvmArgs(
-            "--add-opens", "java.base/java.lang=ALL-UNNAMED",
-            "--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED",
-            "--add-opens", "java.base/java.util=ALL-UNNAMED"
+                "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+                "--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED",
+                "--add-opens", "java.base/java.util=ALL-UNNAMED"
         )
     }
 
@@ -299,10 +305,10 @@ fun generatePsiAndParser(name: String, bnf: String, pack: String) = tasks.regist
 
     inputs.file(src)
     outputs.dirs(
-        mapOf(
-            "psi" to psiDir,
-            "parser" to parserDir
-        )
+            mapOf(
+                    "psi" to psiDir,
+                    "parser" to parserDir
+            )
     )
 }
 
@@ -316,22 +322,22 @@ val generateLangLexer = generateLexer("generateLangLexer", "LangLexer", "transla
 val generateLangPsiAndParser = generatePsiAndParser("generateLangPsiAndParser", "LangParser", "translations/lang/gen")
 
 val generateTranslationTemplateLexer = generateLexer(
-    "generateTranslationTemplateLexer",
-    "TranslationTemplateLexer",
-    "translations/lang/gen/"
+        "generateTranslationTemplateLexer",
+        "TranslationTemplateLexer",
+        "translations/lang/gen/"
 )
 
 val generate by tasks.registering {
     group = "minecraft"
     description = "Generates sources needed to compile the plugin."
     dependsOn(
-        generateAtLexer,
-        generateAtPsiAndParser,
-        generateNbttLexer,
-        generateNbttPsiAndParser,
-        generateLangLexer,
-        generateLangPsiAndParser,
-        generateTranslationTemplateLexer
+            generateAtLexer,
+            generateAtPsiAndParser,
+            generateNbttLexer,
+            generateNbttPsiAndParser,
+            generateLangLexer,
+            generateLangPsiAndParser,
+            generateTranslationTemplateLexer
     )
     outputs.dir("gen")
 }
@@ -352,4 +358,4 @@ tasks.runIde {
 
 inline fun <reified T : Task> TaskContainer.existing() = existing(T::class)
 inline fun <reified T : Task> TaskContainer.register(name: String, configuration: Action<in T>) =
-    register(name, T::class, configuration)
+        register(name, T::class, configuration)

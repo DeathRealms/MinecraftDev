@@ -58,7 +58,6 @@ class BasicGradleStep(
     private val gradleFiles: GradleFiles<String>
 ) : CreatorStep {
     override fun runStep(indicator: ProgressIndicator) {
-        // We will do this ourselves
         ExternalProjectsManagerImpl.disableProjectWatcherAutoUpdate(project)
 
         val (_, gradleProp, settingsGradle) = setupGradleFiles(rootDirectory, gradleFiles)
