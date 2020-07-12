@@ -19,13 +19,13 @@ enum class CustomDependency(
     MATTS_COMMAND_LIB(
         "me.mattstudios.utils",
         "matt-framework",
-        "1.4",
+        "1.4.4",
         "implementation"
     ),
     MATT_GUI_LIB(
         "me.mattstudios.utils",
         "matt-framework-gui",
-        "1.2.8",
+        "1.2.10",
         "implementation"
     ),
     VAULT_API(
