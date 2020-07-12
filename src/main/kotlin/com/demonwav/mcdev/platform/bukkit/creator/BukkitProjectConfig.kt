@@ -62,7 +62,7 @@ class BukkitProjectConfig(override var type: PlatformType) :
         softDependencies.addAll(commaSplit(string))
     }
 
-    override val preferredBuildSystem = BuildSystemType.MAVEN
+    override val preferredBuildSystem = BuildSystemType.GRADLE
 
     override fun buildMavenCreator(
         rootDirectory: Path,
