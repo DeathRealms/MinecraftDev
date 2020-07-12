@@ -37,13 +37,13 @@ object BukkitTemplate : BaseTemplate() {
         project: Project,
         packageName: String,
         className: String,
-        language:Language
+        language: Language
     ): String {
         val props = mapOf(
             "PACKAGE" to packageName,
             "CLASS_NAME" to className
         )
-        return when(language){
+        return when (language) {
             Language.KOTLIN -> project.applyTemplate(KOTLIN_BUKKIT_MAIN_CLASS_TEMPLATE, props)
             Language.JAVA -> project.applyTemplate(BUKKIT_MAIN_CLASS_TEMPLATE, props)
         }

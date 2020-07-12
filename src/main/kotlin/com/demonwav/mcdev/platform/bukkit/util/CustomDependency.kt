@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * Minecraft Dev for IntelliJ
  *
@@ -9,23 +8,22 @@
  * MIT License
  */
 
-=======
->>>>>>> 12cd9858... Did stuff
 package com.demonwav.mcdev.platform.bukkit.util
 
-enum class CustomDependency(val groupId:String, val artifactId:String, val version:String) {
+enum class CustomDependency(val groupId: String, val artifactId: String, val version: String) {
     MATTS_COMMAND_LIB(
-            "me.mattstudios.utils",
-            "matt-framework",
-    "1.3"),
+        "me.mattstudios.utils",
+        "matt-framework",
+        "1.3"
+    ),
     MATT_GUI_LIB(
-            "me.mattstudios.utils",
-            "matt-framework-gui",
-            "1.2.8"
+        "me.mattstudios.utils",
+        "matt-framework-gui",
+        "1.2.8"
     ),
     VAULT_API(
-    "com.github.MilkBowl",
-    "VaultAPI",
-    "1.7"
+        "com.github.MilkBowl",
+        "VaultAPI",
+        "1.7"
     )
 }

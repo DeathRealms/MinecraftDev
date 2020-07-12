@@ -14,18 +14,25 @@ import com.demonwav.mcdev.asset.PlatformAssets
 import com.demonwav.mcdev.creator.MinecraftModuleWizardStep
 import com.demonwav.mcdev.creator.MinecraftProjectCreator
 import com.demonwav.mcdev.creator.ValidatedField
-import com.demonwav.mcdev.creator.ValidatedFieldType.*
+import com.demonwav.mcdev.creator.ValidatedFieldType.CLASS_NAME
+import com.demonwav.mcdev.creator.ValidatedFieldType.LIST
+import com.demonwav.mcdev.creator.ValidatedFieldType.NON_BLANK
 import com.demonwav.mcdev.creator.getVersionSelector
 import com.demonwav.mcdev.platform.PlatformType
 import com.demonwav.mcdev.platform.bukkit.data.LoadOrder
 import com.demonwav.mcdev.platform.bukkit.util.Language
 import com.demonwav.mcdev.util.firstOfType
+import javax.swing.JCheckBox
+import javax.swing.JComboBox
+import javax.swing.JComponent
+import javax.swing.JLabel
+import javax.swing.JPanel
+import javax.swing.JTextField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.swing.Swing
 import kotlinx.coroutines.withContext
-import javax.swing.*
 
 class BukkitProjectSettingsWizard(private val creator: MinecraftProjectCreator) : MinecraftModuleWizardStep() {
 
@@ -49,7 +56,7 @@ class BukkitProjectSettingsWizard(private val creator: MinecraftProjectCreator) 
     private lateinit var softDependField: JTextField
     private lateinit var title: JLabel
     private lateinit var minecraftVersionBox: JComboBox<String>
-    private lateinit var language:JComboBox<*>
+    private lateinit var language: JComboBox<*>
 
     private lateinit var mattsCommandLib: JCheckBox
     private lateinit var mattsGuiLib: JCheckBox
@@ -109,7 +116,6 @@ class BukkitProjectSettingsWizard(private val creator: MinecraftProjectCreator) 
     override fun updateDataModel() {
         val conf = this.config ?: return
 
-
         conf.pluginName = this.pluginNameField.text
         conf.mainClass = this.mainClassField.text
         conf.description = this.descriptionField.text
@@ -128,6 +134,6 @@ class BukkitProjectSettingsWizard(private val creator: MinecraftProjectCreator) 
         conf.mattsGuiLib = this.mattsGuiLib.isSelected
         conf.vaultApi = this.vaultApi.isSelected
 
-        conf.language = if(this.language.selectedIndex == 0) Language.KOTLIN else Language.JAVA
+        conf.language = if (this.language.selectedIndex == 0) Language.KOTLIN else Language.JAVA
     }
 }

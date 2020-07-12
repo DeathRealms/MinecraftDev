@@ -27,7 +27,6 @@ import com.intellij.codeInsight.actions.ReformatCodeProcessor
 import com.intellij.execution.RunManager
 import com.intellij.ide.ui.UISettings
 import com.intellij.openapi.externalSystem.service.execution.ExternalSystemRunConfiguration
-import com.intellij.openapi.externalSystem.service.project.manage.ExternalProjectsManagerImpl
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.project.Project
@@ -58,8 +57,6 @@ class BasicGradleStep(
     private val gradleFiles: GradleFiles<String>
 ) : CreatorStep {
     override fun runStep(indicator: ProgressIndicator) {
-        ExternalProjectsManagerImpl.disableProjectWatcherAutoUpdate(project)
-
         val (_, gradleProp, settingsGradle) = setupGradleFiles(rootDirectory, gradleFiles)
 
         runWriteTask {

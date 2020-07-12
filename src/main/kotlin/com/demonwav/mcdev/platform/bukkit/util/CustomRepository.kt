@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * Minecraft Dev for IntelliJ
  *
@@ -9,10 +8,8 @@
  * MIT License
  */
 
-=======
->>>>>>> 12cd9858... Did stuff
 package com.demonwav.mcdev.platform.bukkit.util
 
-enum class CustomRepository(val id:String, val url:String){
+enum class CustomRepository(val id: String, val url: String) {
     JITPACK("jitpack", "https://jitpack.io")
 }

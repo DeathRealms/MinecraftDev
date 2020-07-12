@@ -29,7 +29,7 @@ class BukkitProjectConfig(override var type: PlatformType) :
 
     override lateinit var mainClass: String
 
-    var language:Language = Language.KOTLIN
+    var language: Language = Language.KOTLIN
 
     var mattsCommandLib = false
     var mattsGuiLib = false

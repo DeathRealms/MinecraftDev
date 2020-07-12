@@ -59,7 +59,7 @@ abstract class BaseProjectCreator(
         return BasicJavaClassStep(project, buildSystem, qualifiedClassName, classText)
     }
 
-    protected fun createKotlinClassStep(qualifiedClassName: String, mapper:JavaClassTextMapper):BasicKotlinClassStep{
+    protected fun createKotlinClassStep(qualifiedClassName: String, mapper: JavaClassTextMapper): BasicKotlinClassStep {
         val (packageName, className) = splitPackage(qualifiedClassName)
         val classText = mapper(packageName, className)
         return BasicKotlinClassStep(project, buildSystem, qualifiedClassName, classText)

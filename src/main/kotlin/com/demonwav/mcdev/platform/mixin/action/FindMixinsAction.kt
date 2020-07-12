@@ -87,7 +87,7 @@ class FindMixinsAction : AnAction() {
                         ToolWindowManager.getInstance(project).unregisterToolWindow(TOOL_WINDOW_ID)
                         val window = ToolWindowManager.getInstance(project)
                             .registerToolWindow(TOOL_WINDOW_ID, true, ToolWindowAnchor.BOTTOM)
-                        window.icon = MixinAssets.MIXIN_CLASS_ICON
+                        window.setIcon(MixinAssets.MIXIN_CLASS_ICON)
 
                         val component = FindMixinsComponent(classes)
                         val content = ContentFactory.SERVICE.getInstance().createContent(component.panel, null, false)
