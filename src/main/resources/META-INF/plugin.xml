@@ -283,6 +283,11 @@
 
         <!--endregion-->
 
+        <!--region PLACEHOLDERAPI-->
+        <!---->
+        <library.presentationProvider implementation="com.demonwav.mcdev.platform.placeholderapi.framework.PlaceholderApiPresentationProvider" />
+        <!--endregion-->
+
 
         <!--region LOCAL INSPECTIONS-->
         <!---->

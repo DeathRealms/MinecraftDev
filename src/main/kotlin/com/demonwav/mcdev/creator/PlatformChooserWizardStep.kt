@@ -17,6 +17,7 @@ import com.demonwav.mcdev.platform.bukkit.creator.BukkitProjectConfig
 import com.demonwav.mcdev.platform.bungeecord.creator.BungeeCordProjectConfig
 import com.demonwav.mcdev.platform.forge.creator.ForgeProjectConfig
 import com.demonwav.mcdev.platform.liteloader.creator.LiteLoaderProjectConfig
+import com.demonwav.mcdev.platform.placeholderapi.creator.PlaceholderApiProjectConfig
 import com.demonwav.mcdev.platform.sponge.creator.SpongeProjectConfig
 import com.demonwav.mcdev.platform.velocity.creator.VelocityProjectConfig
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
@@ -45,6 +46,7 @@ class PlatformChooserWizardStep(private val creator: MinecraftProjectCreator) : 
     private lateinit var waterfallPluginCheckBox: JCheckBox
     private lateinit var velocityPluginCheckBox: JCheckBox
     private lateinit var liteLoaderModCheckBox: JCheckBox
+    private lateinit var placeholderApiCheckBox: JCheckBox
 
     override fun getComponent(): JComponent {
         // Set types
@@ -73,6 +75,7 @@ class PlatformChooserWizardStep(private val creator: MinecraftProjectCreator) : 
         liteLoaderModCheckBox.addActionListener { toggle(liteLoaderModCheckBox, forgeModCheckBox) }
         bungeeCordPluginCheckBox.addActionListener { toggle(bungeeCordPluginCheckBox, waterfallPluginCheckBox) }
         waterfallPluginCheckBox.addActionListener { toggle(waterfallPluginCheckBox, bungeeCordPluginCheckBox) }
+        placeholderApiCheckBox.addActionListener { toggle(placeholderApiCheckBox) }
 
         if (UIUtil.isUnderDarcula()) {
             spongeIcon.icon = PlatformAssets.SPONGE_ICON_2X_DARK
@@ -120,7 +123,8 @@ class PlatformChooserWizardStep(private val creator: MinecraftProjectCreator) : 
             liteLoaderModCheckBox.isSelected ||
             bungeeCordPluginCheckBox.isSelected ||
             waterfallPluginCheckBox.isSelected ||
-            velocityPluginCheckBox.isSelected
+            velocityPluginCheckBox.isSelected ||
+            placeholderApiCheckBox.isSelected
     }
 
     private fun buildConfigs(): LinkedHashSet<ProjectConfig> {
@@ -159,6 +163,10 @@ class PlatformChooserWizardStep(private val creator: MinecraftProjectCreator) : 
 
         if (velocityPluginCheckBox.isSelected) {
             result += VelocityProjectConfig()
+        }
+
+        if (placeholderApiCheckBox.isSelected) {
+            result += PlaceholderApiProjectConfig()
         }
 
         return result

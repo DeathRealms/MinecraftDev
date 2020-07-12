@@ -45,6 +45,8 @@ class MinecraftFacetEditorTab(private val configuration: MinecraftFacetConfigura
     private lateinit var waterfallAutoCheckBox: JCheckBox
     private lateinit var velocityEnabledCheckBox: JCheckBox
     private lateinit var velocityAutoCheckBox: JCheckBox
+    private lateinit var placeholderApiEnabledCheckBox: JCheckBox
+    private lateinit var placeholderApiAutoCheckBox: JCheckBox
 
     private lateinit var spongeIcon: JLabel
     private lateinit var mcpIcon: JLabel
@@ -62,7 +64,8 @@ class MinecraftFacetEditorTab(private val configuration: MinecraftFacetConfigura
             mixinEnabledCheckBox,
             bungeecordEnabledCheckBox,
             waterfallEnabledCheckBox,
-            velocityEnabledCheckBox
+            velocityEnabledCheckBox,
+            placeholderApiEnabledCheckBox
         )
     }
 
@@ -78,7 +81,8 @@ class MinecraftFacetEditorTab(private val configuration: MinecraftFacetConfigura
             mixinAutoCheckBox,
             bungeecordAutoCheckBox,
             waterfallAutoCheckBox,
-            velocityAutoCheckBox
+            velocityAutoCheckBox,
+            placeholderApiAutoCheckBox
         )
     }
 
@@ -140,6 +144,8 @@ class MinecraftFacetEditorTab(private val configuration: MinecraftFacetConfigura
 
         bungeecordEnabledCheckBox.addActionListener { unique(bungeecordEnabledCheckBox, waterfallEnabledCheckBox) }
         waterfallEnabledCheckBox.addActionListener { unique(waterfallEnabledCheckBox, bungeecordEnabledCheckBox) }
+
+        placeholderApiEnabledCheckBox.addActionListener { also(placeholderApiEnabledCheckBox) }
 
         return panel
     }
@@ -261,6 +267,7 @@ class MinecraftFacetEditorTab(private val configuration: MinecraftFacetConfigura
         private const val BUNGEECORD = MIXIN + 1
         private const val WATERFALL = BUNGEECORD + 1
         private const val VELOCITY = WATERFALL + 1
+        private const val PLACEHOLDERAPI = VELOCITY + 1
 
         private val platformTypes = arrayOf(
             PlatformType.BUKKIT,
@@ -273,10 +280,14 @@ class MinecraftFacetEditorTab(private val configuration: MinecraftFacetConfigura
             PlatformType.MIXIN,
             PlatformType.BUNGEECORD,
             PlatformType.WATERFALL,
-            PlatformType.VELOCITY
+            PlatformType.VELOCITY,
+            PlatformType.PLACEHOLDERAPI
         )
 
         private val indexes =
-            intArrayOf(BUKKIT, SPIGOT, PAPER, SPONGE, FORGE, LITELOADER, MCP, MIXIN, BUNGEECORD, WATERFALL, VELOCITY)
+            intArrayOf(
+                BUKKIT, SPIGOT, PAPER, SPONGE, FORGE, LITELOADER, MCP, MIXIN, BUNGEECORD, WATERFALL, VELOCITY,
+                PLACEHOLDERAPI
+            )
     }
 }

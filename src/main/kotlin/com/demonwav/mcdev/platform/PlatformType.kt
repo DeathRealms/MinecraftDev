@@ -28,6 +28,8 @@ import com.demonwav.mcdev.platform.mcp.McpModuleType
 import com.demonwav.mcdev.platform.mcp.framework.MCP_LIBRARY_KIND
 import com.demonwav.mcdev.platform.mixin.MixinModuleType
 import com.demonwav.mcdev.platform.mixin.framework.MIXIN_LIBRARY_KIND
+import com.demonwav.mcdev.platform.placeholderapi.PlaceholderApiModuleType
+import com.demonwav.mcdev.platform.placeholderapi.framework.PLACEHOLDERAPI_LIBRARY_KIND
 import com.demonwav.mcdev.platform.sponge.SpongeModuleType
 import com.demonwav.mcdev.platform.sponge.framework.SPONGE_LIBRARY_KIND
 import com.demonwav.mcdev.platform.velocity.VelocityModuleType
@@ -51,7 +53,8 @@ enum class PlatformType(
     VELOCITY(VelocityModuleType, "Velocity", "velocity.json"),
     LITELOADER(LiteLoaderModuleType, "LiteLoader"),
     MIXIN(MixinModuleType, "Mixin"),
-    MCP(McpModuleType, "MCP");
+    MCP(McpModuleType, "MCP"),
+    PLACEHOLDERAPI(PlaceholderApiModuleType, "PlaceholderAPI", "spigot.json");
 
     private val children = mutableListOf<PlatformType>()
 
@@ -80,6 +83,7 @@ enum class PlatformType(
             BUNGEECORD_LIBRARY_KIND -> BUNGEECORD
             WATERFALL_LIBRARY_KIND -> WATERFALL
             VELOCITY_LIBRARY_KIND -> VELOCITY
+            PLACEHOLDERAPI_LIBRARY_KIND -> PLACEHOLDERAPI
             else -> null
         }
     }
