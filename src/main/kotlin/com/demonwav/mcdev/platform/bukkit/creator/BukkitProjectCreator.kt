@@ -73,7 +73,7 @@ class BukkitMavenCreator(
 
     override fun getSingleModuleSteps(): Iterable<CreatorStep> {
         val pomText = BukkitTemplate.applyPom(project)
-        return listOf(
+        val steps =  mutableListOf(
             setupDependencyStep(),
             BasicMavenStep(project, rootDirectory, buildSystem, config, pomText),
             setupMainClassStep(),
@@ -81,6 +81,17 @@ class BukkitMavenCreator(
             MavenGitignoreStep(project, rootDirectory),
             BasicMavenFinalizerStep(rootModule, rootDirectory)
         )
+        if (config.mattsCommandLib) steps.add(0, CustomDependencyStep(buildSystem, CustomDependency.MATTS_COMMAND_LIB))
+        if (config.mattsGuiLib) steps.add(0, CustomDependencyStep(buildSystem, CustomDependency.MATT_GUI_LIB))
+        if (config.vaultApi) {
+            steps.add(0, CustomRepoStep(buildSystem, CustomRepository.JITPACK))
+            steps.add(0, CustomDependencyStep(buildSystem, CustomDependency.VAULT_API))
+        }
+        if (config.placeholderApi) {
+            steps.add(0, CustomRepoStep(buildSystem, CustomRepository.PLACEHOLDERAPI))
+            steps.add(0, CustomDependencyStep(buildSystem, CustomDependency.PLACEHOLDERAPI))
+        }
+        return steps
     }
 
     override fun getMultiModuleSteps(projectBaseDir: Path): Iterable<CreatorStep> {
@@ -184,7 +195,8 @@ open class CustomDependencyStep(
                 dependency.groupId,
                 dependency.artifactId,
                 dependency.version,
-                gradleConfiguration = dependency.configuration
+                dependency.mavenScope,
+                dependency.gradleConfiguration
             )
         )
     }
