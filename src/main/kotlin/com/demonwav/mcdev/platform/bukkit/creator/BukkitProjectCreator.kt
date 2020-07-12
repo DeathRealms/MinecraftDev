@@ -137,6 +137,10 @@ class BukkitGradleCreator(
             steps.add(0, CustomRepoStep(buildSystem, CustomRepository.JITPACK))
             steps.add(0, CustomDependencyStep(buildSystem, CustomDependency.VAULT_API))
         }
+        if (config.placeholderApi) {
+            steps.add(0, CustomRepoStep(buildSystem, CustomRepository.PLACEHOLDERAPI))
+            steps.add(0, CustomDependencyStep(buildSystem, CustomDependency.PLACEHOLDERAPI))
+        }
         return steps
     }
 
@@ -180,7 +184,7 @@ open class CustomDependencyStep(
                 dependency.groupId,
                 dependency.artifactId,
                 dependency.version,
-                gradleConfiguration = "implementation"
+                gradleConfiguration = dependency.configuration
             )
         )
     }

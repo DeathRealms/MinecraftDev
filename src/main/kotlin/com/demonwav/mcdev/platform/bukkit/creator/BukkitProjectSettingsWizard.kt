@@ -61,6 +61,7 @@ class BukkitProjectSettingsWizard(private val creator: MinecraftProjectCreator) 
     private lateinit var mattsCommandLib: JCheckBox
     private lateinit var mattsGuiLib: JCheckBox
     private lateinit var vaultApi: JCheckBox
+    private lateinit var placeholderApi: JCheckBox
 
     private lateinit var errorLabel: JLabel
 
@@ -133,6 +134,7 @@ class BukkitProjectSettingsWizard(private val creator: MinecraftProjectCreator) 
         conf.mattsCommandLib = this.mattsCommandLib.isSelected
         conf.mattsGuiLib = this.mattsGuiLib.isSelected
         conf.vaultApi = this.vaultApi.isSelected
+        conf.placeholderApi = this.placeholderApi.isSelected
 
         conf.language = if (this.language.selectedIndex == 0) Language.KOTLIN else Language.JAVA
     }
