@@ -27,8 +27,6 @@ data class DirectorySet(
             val resourceDirectory = dir.resolve("src/main/resources")
             val testSourceDirectory = dir.resolve("src/test/java")
             val testResourceDirectory = dir.resolve("src/test/resources")
-            Files.createDirectories(sourceDirectory)
-            Files.createDirectories(resourceDirectory)
             Files.createDirectories(testSourceDirectory)
             Files.createDirectories(testResourceDirectory)
             return DirectorySet(
