@@ -57,11 +57,14 @@ object BukkitTemplate : BaseTemplate() {
         return project.applyTemplate(BUKKIT_SUBMODULE_POM_TEMPLATE, BasicMavenStep.pluginVersions)
     }
 
-    fun applyBuildGradle(project: Project, buildSystem: BuildSystem): String {
-        val props = mapOf(
+    fun applyBuildGradle(project: Project, buildSystem: BuildSystem, language: Language): String {
+        val props = mutableMapOf(
             "GROUP_ID" to buildSystem.groupId,
             "PLUGIN_VERSION" to buildSystem.version
         )
+        if (language == Language.KOTLIN) {
+            props["KOTLIN"] = "kotlin"
+        }
 
         return project.applyTemplate(BUKKIT_BUILD_GRADLE_TEMPLATE, props)
     }
