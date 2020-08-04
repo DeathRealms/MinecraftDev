@@ -112,9 +112,9 @@ intellij {
     setPlugins(
         "java", "maven", "gradle", "Groovy",
         // needed dependencies for unit tests
-        "properties", "junit",
+        "properties", "junit"
         // useful to have when running for mods.toml
-        "org.toml.lang:0.2.114.35-193"
+        // "org.toml.lang:0.2.114.35-193"
     )
 
     pluginName = "Minecraft Development"
@@ -174,28 +174,6 @@ tasks.processResources {
         eachFile {
             this.relativePath = RelativePath(true, "fileTemplates", "j2ee", this.name)
         }
-    }
-}
-
-tasks.test {
-    dependsOn(testLibs)
-    useJUnitPlatform()
-    doFirst {
-        testLibs.resolvedConfiguration.resolvedArtifacts.forEach {
-            systemProperty("testLibs.${it.name}", it.file.absolutePath)
-        }
-    }
-    if (JavaVersion.current().isJava9Compatible) {
-        jvmArgs(
-            "--add-opens", "java.base/java.io=ALL-UNNAMED",
-            "--add-opens", "java.base/java.lang=ALL-UNNAMED",
-            "--add-opens", "java.desktop/sun.awt=ALL-UNNAMED",
-            "--add-opens", "java.desktop/java.awt=ALL-UNNAMED",
-            "--add-opens", "java.desktop/javax.swing=ALL-UNNAMED",
-            "--add-opens", "java.desktop/javax.swing.plaf.basic=ALL-UNNAMED",
-            "--add-opens", "java.desktop/sun.font=ALL-UNNAMED",
-            "--add-opens", "java.desktop/sun.swing=ALL-UNNAMED"
-        )
     }
 }
 

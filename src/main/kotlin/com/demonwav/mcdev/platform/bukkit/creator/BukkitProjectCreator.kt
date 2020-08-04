@@ -73,7 +73,7 @@ class BukkitMavenCreator(
 
     override fun getSingleModuleSteps(): Iterable<CreatorStep> {
         val pomText = BukkitTemplate.applyPom(project)
-        val steps =  mutableListOf(
+        val steps = mutableListOf(
             setupDependencyStep(),
             BasicMavenStep(project, rootDirectory, buildSystem, config, pomText),
             setupMainClassStep(),
